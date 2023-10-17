@@ -1,0 +1,99 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "extends": [
+    "eslint-config-prettier"
+  ],
+  "plugins": [
+    "eslint-plugin-prettier"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "nsu",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "arrowParens": "avoid",
+            "bracketSpacing": false,
+            "singleQuote": true,
+            "importOrder": [
+              "^@(core|shared|views)/(.*)$",
+              "^[./]"
+            ],
+            "importOrderSeparation": true,
+            "importOrderSortSpecifiers": false,
+            "importOrderParserPlugins": [
+              "typescript",
+              "decorators-legacy"
+            ]
+          }
+        ],
+        "no-unused-vars": "error"
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:@angular-eslint/template/accessibility"
+      ],
+      "rules": {
+        "@angular-eslint/template/attributes-order": [
+          "error",
+          {
+            "alphabetical": false,
+            "order": [
+              "STRUCTURAL_DIRECTIVE",
+              "TEMPLATE_REFERENCE",
+              "ATTRIBUTE_BINDING",
+              "TWO_WAY_BINDING",
+              "INPUT_BINDING",
+              "OUTPUT_BINDING"
+            ]
+          }
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "singleAttributePerLine": false,
+            "bracketSameLine": true,
+            "bracketSpacing": true,
+            "singleQuote": false
+          }
+        ]
+      }
+    }
+  ]
+}
