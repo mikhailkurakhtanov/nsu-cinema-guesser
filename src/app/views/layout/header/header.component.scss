@@ -1,0 +1,17 @@
+#header {
+  > button {
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+
+    @media (max-width: 600px) {
+      position: unset;
+      transform: unset;
+      margin-left: 15px;
+    }
+  }
+
+  > div > *:not(:last-child) {
+    margin-right: 15px;
+  }
+}
