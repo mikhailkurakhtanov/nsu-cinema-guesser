@@ -13,7 +13,7 @@
 
       <mat-form-field color="accent">
         <mat-label>Пароль</mat-label>
-        <input matInput formControlName="password" />
+        <input matInput type="password" formControlName="password" />
         <mat-error *ngIf="form.get('password')?.hasError('required')">{{ formErrors.required }}</mat-error>
       </mat-form-field>
 
