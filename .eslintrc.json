@@ -1,0 +1,112 @@
+{
+  "root": true,
+  "extends": [
+    "eslint-config-prettier"
+  ],
+  "plugins": [
+    "eslint-plugin-prettier"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "arrowParens": "avoid",
+        "endOfLine": "auto",
+        "trailingComma": "all",
+        "semi": true,
+        "tabWidth": 2,
+        "printWidth": 140
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "cinema-guesser",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "cinema-guesser",
+            "style": "kebab-case"
+          }
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "importOrder": [
+              "^@(core|shared|views)/(.*)$",
+              "^[./]"
+            ],
+            "importOrderSeparation": true,
+            "importOrderSortSpecifiers": false,
+            "importOrderParserPlugins": [
+              "typescript",
+              "decorators-legacy"
+            ],
+            "bracketSpacing": false,
+            "semi": true,
+            "singleQuote": true,
+            "trailingComma": "all"
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.component.html"
+      ],
+      "extends": [
+        "eslint-config-prettier",
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "plugins": [
+        "eslint-plugin-prettier"
+      ],
+      "rules": {
+        "@angular-eslint/template/banana-in-box": "error",
+        "@angular-eslint/template/no-negated-async": "error",
+        "@angular-eslint/template/no-call-expression": "warn",
+        "@angular-eslint/template/attributes-order": [
+          "error",
+          {
+            "alphabetical": false,
+            "order": [
+              "STRUCTURAL_DIRECTIVE",
+              "TEMPLATE_REFERENCE",
+              "ATTRIBUTE_BINDING",
+              "TWO_WAY_BINDING",
+              "INPUT_BINDING",
+              "OUTPUT_BINDING"
+            ]
+          }
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "singleAttributePerLine": false,
+            "bracketSameLine": true,
+            "bracketSpacing": true,
+            "singleQuote": false
+          }
+        ]
+      }
+    }
+  ]
+}
