@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-content>
+    <div id="logo">
+      <img alt="logo" height="40" width="370" priority="true" [ngSrc]="'assets/images/logo-dark.svg'" />
+    </div>
+
+    <form id="loginForm" [formGroup]="form">
+      <mat-form-field color="accent">
+        <mat-label>Логин</mat-label>
+        <input matInput formControlName="login" />
+        <mat-error *ngIf="form.get('login')?.hasError('required')">{{ formErrors.required }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field color="accent">
+        <mat-label>Пароль</mat-label>
+        <input matInput formControlName="password" />
+        <mat-error *ngIf="form.get('password')?.hasError('required')">{{ formErrors.required }}</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="login()">Войти</button>
+    </form>
+  </mat-card-content>
+</mat-card>

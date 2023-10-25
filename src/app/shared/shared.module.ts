@@ -1,8 +1,11 @@
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
-import {MaterialModule} from './modules/material/material.module';
+import {ReactiveFormsModule} from '@angular/forms';
+
+import {MaterialModule} from '@shared/modules/material.module';
 
 @NgModule({
   imports: [MaterialModule],
-  exports: [MaterialModule],
+  exports: [MaterialModule, ReactiveFormsModule, HttpClientModule],
 })
 export class SharedModule {}
