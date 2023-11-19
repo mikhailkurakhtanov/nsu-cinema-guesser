@@ -14,7 +14,7 @@
           "@trivago/prettier-plugin-sort-imports"
         ],
         "importOrder": [
-          "^@(core|shared|views)/(.*)$",
+          "^@(core|shared|features)/(.*)$",
           "^[./]"
         ],
         "importOrderSeparation": true,
@@ -34,7 +34,6 @@
         "*.component.html"
       ],
       "options": {
-        "singleAttributePerLine": false,
         "bracketSameLine": true,
         "bracketSpacing": true,
         "singleQuote": false

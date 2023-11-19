@@ -1,0 +1,26 @@
+<mat-card class="auth-form">
+  <mat-card-content>
+    <div class="form-header">
+      <img alt="logo" height="40" width="370" priority="true" [ngSrc]="'assets/images/logo-dark.svg'" />
+    </div>
+
+    <form class="form-body" [formGroup]="form">
+      <mat-form-field color="accent">
+        <mat-label>Логин</mat-label>
+        <input matInput formControlName="login" />
+        <mat-error *ngIf="form.get('login')?.hasError('required')">{{ formErrors.required }}</mat-error>
+        <mat-error *ngIf="form.get('login')?.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field color="accent">
+        <mat-label>Пароль</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="form.get('password')?.hasError('required')">{{ formErrors.required }}</mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="login()">Войти</button>
+    </form>
+    <span class="form-footer">Нет учетной записи?&nbsp;<a [routerLink]="AppPath.REGISTER">Создать</a></span>
+  </mat-card-content>
+</mat-card>
