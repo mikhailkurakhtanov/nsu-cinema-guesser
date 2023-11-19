@@ -9,6 +9,7 @@ export const constants = {
       maxLengthLg: 128,
     },
     errors: {
+      email: 'Некорректный формат Email',
       required: 'Поле обязательно для заполнения',
       maxLength: 'Превышено допустимое кол-во символов',
       passwordMismatch: 'Пароли не совпадают',

@@ -9,6 +9,7 @@
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" />
         <mat-error *ngIf="form.get('email')?.hasError('required')">{{ formErrors.required }}</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">{{ formErrors.email }}</mat-error>
         <mat-error *ngIf="form.get('email')?.hasError('maxLength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
