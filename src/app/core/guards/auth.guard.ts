@@ -1,14 +1,15 @@
 import {inject} from '@angular/core';
 import {CanActivateFn, Router} from '@angular/router';
 
-import {AuthService} from '@core/services/auth/auth.service';
+import {LocalStorageService} from '@core/services/local-storage.service';
+import {constants} from '@shared/constants';
 import {AppPath} from '@shared/enums/app-path.enum';
 
 export const authGuard: CanActivateFn = (activatedRoute, routerState) => {
-  const authService: AuthService = inject(AuthService);
+  const localStorageService: LocalStorageService = inject(LocalStorageService);
   const router: Router = inject(Router);
 
-  const isUserAuthorized = !!authService.getAccessToken();
+  const isUserAuthorized = !!localStorageService.getItem(constants.localStorage.accessToken);
   if (routerState.url === AppPath.LOGIN) {
     if (isUserAuthorized) {
       router.navigate(['']).then();
@@ -18,8 +19,10 @@ export const authGuard: CanActivateFn = (activatedRoute, routerState) => {
   }
 
   if (!isUserAuthorized) {
-    router.navigate([AppPath.LOGIN]).then();
-    return false;
+    if (routerState.url !== AppPath.REGISTER) {
+      router.navigate([AppPath.LOGIN]).then();
+      return false;
+    }
   }
   return true;
 };

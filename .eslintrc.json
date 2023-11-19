@@ -12,10 +12,8 @@
       {
         "arrowParens": "avoid",
         "endOfLine": "auto",
-        "trailingComma": "all",
-        "semi": true,
         "tabWidth": 2,
-        "printWidth": 120
+        "printWidth": 140
       }
     ]
   },
@@ -29,6 +27,12 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "plugins": [
+        "unused-imports",
+        "import-newlines",
+        "eslint-plugin-import",
+        "import"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -51,7 +55,7 @@
           "error",
           {
             "importOrder": [
-              "^@(core|shared|views)/(.*)$",
+              "^@(core|environments|shared|features)/(.*)$",
               "^[./]"
             ],
             "importOrderSeparation": true,
@@ -65,6 +69,51 @@
             "singleQuote": true,
             "trailingComma": "all"
           }
+        ],
+        "import/extensions": "off",
+        "import/prefer-default-export": "off",
+        "unused-imports/no-unused-imports": "error",
+        "import/no-unresolved": "off",
+        "import/order": [
+          "error",
+          {
+            "newlines-between": "always-and-inside-groups",
+            "groups": [
+              [
+                "external",
+                "builtin",
+                "unknown"
+              ],
+              [
+                "internal",
+                "parent",
+                "sibling"
+              ],
+              "index"
+            ],
+            "pathGroups": [
+              {
+                "pattern": "@(core|environments|shared|features)/**",
+                "group": "internal"
+              },
+              {
+                "pattern": "./**",
+                "group": "index"
+              },
+              {
+                "pattern": "@angular/**",
+                "group": "external"
+              },
+              {
+                "pattern": "(rxjs|rxjs/**)",
+                "group": "external"
+              }
+            ],
+            "pathGroupsExcludedImportTypes": [
+              "type",
+              "object"
+            ]
+          }
         ]
       }
     },
@@ -75,9 +124,6 @@
       "extends": [
         "eslint-config-prettier",
         "plugin:@angular-eslint/template/recommended"
-      ],
-      "plugins": [
-        "eslint-plugin-prettier"
       ],
       "rules": {
         "@angular-eslint/template/banana-in-box": "error",

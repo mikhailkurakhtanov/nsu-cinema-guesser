@@ -1,11 +1,10 @@
-import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
-import {AuthService} from '@core/services/auth/auth.service';
-import {NgOnDestroy} from '@core/services/ng-on-destroy/ng-on-destroy.service';
+import {LocalStorageService} from '@core/services/local-storage.service';
+import {NgOnDestroy} from '@core/services/ng-on-destroy.service';
+import {WebPageService} from '@core/services/web-page.service';
 
 @NgModule({
-  providers: [AuthService, NgOnDestroy],
-  imports: [CommonModule],
+  providers: [WebPageService, NgOnDestroy, LocalStorageService],
 })
 export class CoreModule {}

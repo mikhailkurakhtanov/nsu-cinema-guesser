@@ -1,24 +1,30 @@
-mat-card {
+mat-card.auth-form {
   top: 50%;
   left: 50%;
   max-width: 400px;
   transform: translateY(-50%) translateX(-50%);
 
-  #logo {
+  .form-header {
     display: flex;
 
     > img {
-      margin: 0 auto 30px auto;
+      width: 100%;
       max-width: 300px;
+      margin: 0 auto 30px auto;
     }
   }
 
-  #loginForm {
+  .form-body {
     display: flex;
     flex-direction: column;
 
-    > mat-form-field {
+    > * {
       margin-bottom: 15px;
     }
+  }
+
+  .form-footer {
+    display: inherit;
+    text-align: center;
   }
 }

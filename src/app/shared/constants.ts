@@ -3,8 +3,16 @@ export const constants = {
     accessToken: 'access_token',
     refreshToken: 'refresh_token',
   },
-  formErrors: {
-    required: 'Поле обязательно для заполнения',
+  form: {
+    limits: {
+      maxLengthSm: 64,
+      maxLengthLg: 128,
+    },
+    errors: {
+      required: 'Поле обязательно для заполнения',
+      maxLength: 'Превышено допустимое кол-во символов',
+      passwordMismatch: 'Пароли не совпадают',
+    },
   },
-  apiUrl: 'http://localhost:8080',
+  apiUrl: 'https://tomcat.csfullstack.com/cinema-guesser-api/api/v1',
 };
