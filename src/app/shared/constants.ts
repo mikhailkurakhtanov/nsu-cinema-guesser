@@ -1,8 +1,6 @@
 export const constants = {
-  localStorage: {
-    accessToken: 'access_token',
-    refreshToken: 'refresh_token',
-  },
+  apiUrl: 'https://tomcat.csfullstack.com/cinema-guesser-api/api/v1',
+  defaultSnackBarDuration: 3000,
   form: {
     limits: {
       maxLengthSm: 64,
@@ -15,5 +13,8 @@ export const constants = {
       passwordMismatch: 'Пароли не совпадают',
     },
   },
-  apiUrl: 'https://tomcat.csfullstack.com/cinema-guesser-api/api/v1',
+  localStorage: {
+    accessToken: 'access_token',
+    refreshToken: 'refresh_token',
+  },
 };

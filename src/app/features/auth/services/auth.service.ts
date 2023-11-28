@@ -37,5 +37,5 @@ export class AuthService {
     localStorage.setItem(constants.localStorage.refreshToken, authData.refreshToken);
   }
 
-  private showErrorMessage = (message: string) => this.snackBar.open(message, undefined, {duration: 3000});
+  private showErrorMessage = (message: string) => this.snackBar.open(message, undefined, {duration: constants.defaultSnackBarDuration});
 }

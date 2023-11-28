@@ -53,6 +53,10 @@ export class LoginComponent implements OnInit {
     this.authService
       .authenticate(loginData)
       .pipe(takeUntil(this.destroy))
-      .subscribe(() => this.router.navigate(['']).then(() => this.snackBar.open('Вы вошли в систему')));
+      .subscribe(() =>
+        this.router
+          .navigate([''])
+          .then(() => this.snackBar.open('Вы вошли в систему', undefined, {duration: constants.defaultSnackBarDuration})),
+      );
   }
 }
