@@ -10,7 +10,7 @@ import {constants} from '@shared/constants';
 
 @Injectable()
 export class AuthService {
-  private readonly apiUrl: string = constants.apiUrl;
+  private readonly apiUrl: string = `${constants.apiUrl}/auth`;
   private readonly httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(

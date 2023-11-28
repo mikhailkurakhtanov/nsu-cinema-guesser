@@ -6,17 +6,17 @@
 
     <form class="form-body" [formGroup]="form">
       <mat-form-field color="accent">
-        <mat-label>Логин</mat-label>
-        <input matInput formControlName="login" />
-        <mat-error *ngIf="form.get('login')?.hasError('required')">{{ formErrors.required }}</mat-error>
-        <mat-error *ngIf="form.get('login')?.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
+        <mat-label>Имя пользователя</mat-label>
+        <input matInput [formControl]="form.controls.username" />
+        <mat-error *ngIf="form.controls.username.hasError('required')">{{ formErrors.required }}</mat-error>
+        <mat-error *ngIf="form.controls.username.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
       <mat-form-field color="accent">
         <mat-label>Пароль</mat-label>
-        <input matInput type="password" formControlName="password" />
-        <mat-error *ngIf="form.get('password')?.hasError('required')">{{ formErrors.required }}</mat-error>
-        <mat-error *ngIf="form.get('password')?.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
+        <input matInput type="password" [formControl]="form.controls.password" />
+        <mat-error *ngIf="form.controls.password.hasError('required')">{{ formErrors.required }}</mat-error>
+        <mat-error *ngIf="form.controls.password.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
       <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="login()">Войти</button>

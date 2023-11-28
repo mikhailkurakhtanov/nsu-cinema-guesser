@@ -1,5 +1,6 @@
 import {Component, OnInit, Self} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs';
 
@@ -29,6 +30,7 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
+    private snackBar: MatSnackBar,
     private webPageService: WebPageService,
   ) {}
 
@@ -76,6 +78,6 @@ export class RegisterComponent implements OnInit {
     this.authService
       .register(this.registerData)
       .pipe(takeUntil(this.destroy))
-      .subscribe(() => this.router.navigate(['']));
+      .subscribe(() => this.router.navigate(['']).then(() => this.snackBar.open('Вы вошли в систему')));
   }
 }

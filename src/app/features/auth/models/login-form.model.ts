@@ -1,11 +1,11 @@
 import {FormControl} from '@angular/forms';
 
 export interface Login {
-  login: string;
+  username: string;
   password: string;
 }
 
 export interface LoginForm {
-  login: FormControl<string>;
+  username: FormControl<string>;
   password: FormControl<string>;
 }

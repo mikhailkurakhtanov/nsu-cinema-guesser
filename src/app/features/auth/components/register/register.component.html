@@ -30,8 +30,8 @@
       <mat-form-field color="accent">
         <mat-label>Подтверждение пароля</mat-label>
         <input matInput type="password" formControlName="passwordConfirmation" />
-        <mat-error *ngIf="form.get('passwordConfirmation')?.hasError('required')">{{ formErrors.required }}</mat-error>
-        <mat-error *ngIf="form.get('passwordConfirmation')?.hasError('maxLength')">{{ formErrors.maxLength }}</mat-error>
+        <mat-error *ngIf="form.controls.passwordConfirmation.hasError('required')">{{ formErrors.required }}</mat-error>
+        <mat-error *ngIf="form.controls.passwordConfirmation.hasError('maxLength')">{{ formErrors.maxLength }}</mat-error>
         <mat-error *ngIf="form.errors?.['passwordMismatch']">{{ formErrors.passwordMismatch }}</mat-error>
       </mat-form-field>
 
