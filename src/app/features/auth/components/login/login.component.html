@@ -21,6 +21,8 @@
 
       <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="login()">Войти</button>
     </form>
+
+    <span class="form-footer" style="margin-bottom: 5px">Забыли пароль?&nbsp;<a [routerLink]="AppPath.REGISTER">Восстановить</a></span>
     <span class="form-footer">Нет учетной записи?&nbsp;<a [routerLink]="AppPath.REGISTER">Создать</a></span>
   </mat-card-content>
 </mat-card>

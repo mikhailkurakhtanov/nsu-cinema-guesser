@@ -19,6 +19,10 @@
 
   <div style="margin-left: auto">
     <button mat-raised-button>Правила</button>
-    <button mat-raised-button>Профиль</button>
+    <button mat-raised-button [matMenuTriggerFor]="profileMenu">Профиль</button>
+
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item (click)="logout()">Выход</button>
+    </mat-menu>
   </div>
 </mat-toolbar>
