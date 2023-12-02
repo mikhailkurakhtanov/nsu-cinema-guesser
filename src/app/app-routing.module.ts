@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 import {authGuard} from '@core/guards/auth.guard';
+import {ChangePasswordComponent} from '@features/auth/components/change-password/change-password.component';
 import {LoginComponent} from '@features/auth/components/login/login.component';
 import {RegisterComponent} from '@features/auth/components/register/register.component';
 import {LayoutComponent} from '@features/layout/layout.component';
@@ -20,6 +21,10 @@ const routes: Routes = [
     ],
   },
   {
+    path: 'change-password',
+    component: ChangePasswordComponent,
+  },
+  {
     path: 'login',
     component: LoginComponent,
     canActivate: [authGuard],
@@ -28,6 +33,11 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
   },
 ];
 

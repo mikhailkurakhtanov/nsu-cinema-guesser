@@ -10,17 +10,19 @@ import {ChangePassword} from '@features/auth/models/change-password-form.model';
 import {AuthService} from '@features/auth/services/auth.service';
 import {constants} from '@shared/constants';
 import {AppPath} from '@shared/enums/app-path.enum';
+import {Utils} from '@shared/utils';
 
 interface RecoverPasswordForm {
   email: FormControl<string>;
   confirmationCode: FormControl<string>;
-  newPassword: FormControl<string>;
-  newPasswordConfirmation: FormControl<string>;
+  password: FormControl<string>;
+  passwordConfirmation: FormControl<string>;
 }
 
 @Component({
   selector: 'cinema-guesser-change-password',
   templateUrl: './change-password.component.html',
+  styleUrls: ['../../assets/styles/auth-form.scss'],
   providers: [NgOnDestroy],
 })
 export class ChangePasswordComponent implements OnInit {
@@ -48,24 +50,27 @@ export class ChangePasswordComponent implements OnInit {
     this.webPageService.setTitle('Изменение пароля');
     const formLimits = constants.form.limits;
 
-    this.form = this.formBuilder.group<RecoverPasswordForm>({
-      email: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.email, Validators.maxLength(formLimits.maxLengthSm)],
-      }),
-      confirmationCode: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.maxLength(formLimits.maxLengthSm)],
-      }),
-      newPassword: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.maxLength(formLimits.maxLengthSm)],
-      }),
-      newPasswordConfirmation: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.maxLength(formLimits.maxLengthSm)],
-      }),
-    });
+    this.form = this.formBuilder.group<RecoverPasswordForm>(
+      {
+        email: new FormControl<string>('', {
+          nonNullable: true,
+          validators: [Validators.required, Validators.email, Validators.maxLength(formLimits.maxLengthSm)],
+        }),
+        confirmationCode: new FormControl<string>('', {
+          nonNullable: true,
+          validators: [Validators.required, Validators.maxLength(formLimits.maxLengthSm)],
+        }),
+        password: new FormControl<string>('', {
+          nonNullable: true,
+          validators: [Validators.required, Validators.maxLength(formLimits.maxLengthSm)],
+        }),
+        passwordConfirmation: new FormControl<string>('', {
+          nonNullable: true,
+          validators: [Validators.required, Validators.maxLength(formLimits.maxLengthSm)],
+        }),
+      },
+      {validators: Utils.setPasswordMatchValidator},
+    );
   }
 
   sendConfirmationCode(): void {
@@ -106,8 +111,8 @@ export class ChangePasswordComponent implements OnInit {
 
     const formData: ChangePassword = {
       email: this.form.controls.email.value,
-      newPassword: this.form.controls.newPassword.value,
-      newPasswordConfirmation: this.form.controls.newPasswordConfirmation.value,
+      newPassword: this.form.controls.password.value,
+      newPasswordConfirmation: this.form.controls.passwordConfirmation.value,
     };
 
     this.authService
