@@ -2,6 +2,7 @@
   <mat-card-content>
     <div class="form-header">
       <img alt="logo" height="40" width="370" priority="true" [ngSrc]="'assets/images/logo-dark.svg'" />
+      <h2>Регистрация</h2>
     </div>
 
     <form class="form-body" [formGroup]="form">
@@ -32,12 +33,14 @@
         <input matInput type="password" formControlName="passwordConfirmation" />
         <mat-error *ngIf="form.controls.passwordConfirmation.hasError('required')">{{ formErrors.required }}</mat-error>
         <mat-error *ngIf="form.controls.passwordConfirmation.hasError('maxLength')">{{ formErrors.maxLength }}</mat-error>
-        <mat-error *ngIf="form.errors?.['passwordMismatch']">{{ formErrors.passwordMismatch }}</mat-error>
+        <mat-error *ngIf="form.hasError('passwordMismatch')">{{ formErrors.passwordMismatch }}</mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="submitForm()">
-        Создать учетную запись
-      </button>
+      <div class="form-actions">
+        <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="submitForm()">
+          Создать учетную запись
+        </button>
+      </div>
     </form>
     <span class="form-footer">Уже есть учетная запись?&nbsp;<a [routerLink]="AppPath.LOGIN">Войти</a></span>
   </mat-card-content>

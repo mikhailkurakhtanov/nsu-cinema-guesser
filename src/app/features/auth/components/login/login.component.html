@@ -2,6 +2,7 @@
   <mat-card-content>
     <div class="form-header">
       <img alt="logo" height="40" width="370" priority="true" [ngSrc]="'assets/images/logo-dark.svg'" />
+      <h2>Авторизация</h2>
     </div>
 
     <form class="form-body" [formGroup]="form">
@@ -19,8 +20,12 @@
         <mat-error *ngIf="form.controls.password.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="login()">Войти</button>
+      <div class="form-actions">
+        <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="login()">Войти</button>
+      </div>
     </form>
+
+    <span class="form-footer" style="margin-bottom: 5px">Забыли пароль?&nbsp;<a [routerLink]="AppPath.CHANGE_PASSWORD">Изменить</a></span>
     <span class="form-footer">Нет учетной записи?&nbsp;<a [routerLink]="AppPath.REGISTER">Создать</a></span>
   </mat-card-content>
 </mat-card>
