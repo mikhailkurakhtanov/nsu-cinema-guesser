@@ -1,5 +1,5 @@
 export const constants = {
-  apiUrl: 'https://tomcat.csfullstack.com/cinema-guesser-api/api/v1',
+  apiUrl: 'http://localhost:8080/api/v1',
   defaultSnackBarDuration: 3000,
   form: {
     limits: {
