@@ -5,20 +5,20 @@
     width="185"
     alt="logo"
     draggable="false"
+    [routerLink]="''"
     [ngSrc]="'assets/images/logo-dark.svg'" />
   <ng-template #mobileLogo>
     <img height="38.25" width="49.5" alt="logo" [ngSrc]="'assets/images/icon-dark.svg'" />
   </ng-template>
 
-  <button id="startButton" mat-raised-button color="accent" [matMenuTriggerFor]="modeSelector">Новая игра</button>
+  <button #showLevelSelector id="startButton" mat-raised-button color="accent" [matMenuTriggerFor]="modeSelector">Новая игра</button>
   <mat-menu #modeSelector="matMenu">
-    <button mat-menu-item>Легкая</button>
-    <button mat-menu-item>Средняя</button>
-    <button mat-menu-item>Сложная</button>
+    <button mat-menu-item (click)="navigateToGame(LevelType.EASY)">Легкая</button>
+    <button mat-menu-item (click)="navigateToGame(LevelType.NORMAL)">Средняя</button>
+    <button mat-menu-item (click)="navigateToGame(LevelType.HARD)">Сложная</button>
   </mat-menu>
 
   <div style="margin-left: auto">
-    <button mat-raised-button>Правила</button>
     <button mat-raised-button [matMenuTriggerFor]="profileMenu">Профиль</button>
 
     <mat-menu #profileMenu="matMenu">

@@ -110,9 +110,9 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     const formData: ChangePassword = {
+      resetCode: Number(this.form.controls.confirmationCode.value),
       email: this.form.controls.email.value,
       newPassword: this.form.controls.password.value,
-      newPasswordConfirmation: this.form.controls.passwordConfirmation.value,
     };
 
     this.authService
