@@ -11,7 +11,7 @@
     <img height="38.25" width="49.5" alt="logo" [ngSrc]="'assets/images/icon-dark.svg'" />
   </ng-template>
 
-  <button #showLevelSelector id="startButton" mat-raised-button color="accent" [matMenuTriggerFor]="modeSelector">Новая игра</button>
+  <button #showLevelSelector id="startButton" mat-raised-button [matMenuTriggerFor]="modeSelector">Новая игра</button>
   <mat-menu #modeSelector="matMenu">
     <button mat-menu-item (click)="navigateToGame(LevelType.EASY)">Легкая</button>
     <button mat-menu-item (click)="navigateToGame(LevelType.NORMAL)">Средняя</button>

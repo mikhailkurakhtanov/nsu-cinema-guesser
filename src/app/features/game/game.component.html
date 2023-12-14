@@ -6,7 +6,7 @@
       <img alt="Movie image" style="height: 100%; margin-right: 16px; border-radius: 5px" [src]="imageSrc" />
 
       <div style="width: 100%; height: 100%; display: flex; flex-direction: column">
-        <h3 style="text-align: center">Дополнительные подсказки</h3>
+        <h3>Дополнительные подсказки</h3>
 
         <div style="overflow: auto">
           <ng-container *ngIf="receivedTextParams.length > 0; else noReceivedParams">
@@ -42,7 +42,7 @@
 
     <div style="display: flex; justify-content: space-around">
       <button mat-raised-button (click)="endGame()">Завершить игру</button>
-      <button mat-raised-button color="primary" (click)="confirmAnswer()">Ответить</button>
+      <button mat-raised-button (click)="confirmAnswer()">Ответить</button>
     </div>
 
     <div *ngIf="!gameIsLoaded || !roundInfo" id="loadingOverflow">
