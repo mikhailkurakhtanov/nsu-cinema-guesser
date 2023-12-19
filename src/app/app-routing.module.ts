@@ -18,6 +18,10 @@ const routes: Routes = [
         path: '',
         component: MainComponent,
       },
+      {
+        path: 'game',
+        loadChildren: () => import('@features/game/game.module').then(m => m.GameModule),
+      },
     ],
   },
   {

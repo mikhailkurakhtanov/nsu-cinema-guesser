@@ -1,0 +1,65 @@
+<mat-card>
+  <mat-card-content style="max-width: 650px; width: 100%; margin: auto">
+    <h1>Раунд {{ currentRound }}</h1>
+
+    <div style="width: 100%; height: 250px; display: flex; align-items: start; justify-content: space-between">
+      <img alt="Movie image" style="height: 100%; margin-right: 16px; border-radius: 5px" [src]="imageSrc" />
+
+      <div style="width: 100%; height: 100%; display: flex; flex-direction: column">
+        <h3>Дополнительные подсказки</h3>
+
+        <div style="overflow: auto">
+          <ng-container *ngIf="receivedTextParams.length > 0; else noReceivedParams">
+            <p *ngFor="let textParam of receivedTextParams">{{ textParam }}</p>
+          </ng-container>
+        </div>
+
+        <ng-template #noReceivedParams>
+          <span style="color: #c8c8c8">Для выбора подсказки воспользуйтесь меню</span>
+        </ng-template>
+      </div>
+    </div>
+
+    <mat-card style="margin: 16px 0">
+      <mat-card-content style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; flex-direction: column">
+          <cinema-guesser-features-game-stopwatch></cinema-guesser-features-game-stopwatch>
+
+          <p *ngIf="roundInfo">Баланс: {{ roundInfo.score }}</p>
+          <p>Общий счет: {{ totalScore }}</p>
+        </div>
+        <button
+          mat-raised-button
+          matTooltipPosition="left"
+          [matTooltipDisabled]="!usedParams.length"
+          [matTooltip]="'Использованные подсказки: ' + usedParams.join(', ')"
+          [matMenuTriggerFor]="paramSelector">
+          Выбрать подсказку
+        </button>
+        <mat-menu #paramSelector="matMenu">
+          <ng-container *ngFor="let param of availableParams">
+            <button #paramsItem mat-menu-item (click)="getParameter(param, paramsItem._getHostElement().innerText)">
+              {{ param | gameParamLocalize }}
+            </button>
+          </ng-container>
+        </mat-menu>
+      </mat-card-content>
+    </mat-card>
+
+    <div *ngIf="roundInfo?.listOfAnswers?.length">
+      <mat-radio-group [(ngModel)]="selectedAnswer">
+        <mat-radio-button *ngFor="let title of roundInfo.listOfAnswers" [value]="title">{{ title }}</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div style="display: flex; justify-content: space-around; margin-top: 16px">
+      <button mat-raised-button (click)="endGame()">Завершить игру</button>
+      <button mat-raised-button (click)="confirmAnswer()">Ответить</button>
+    </div>
+
+    <div *ngIf="!gameIsLoaded || !roundInfo" id="loadingOverflow">
+      <h3>Подождите, игра загружается</h3>
+      <mat-spinner></mat-spinner>
+    </div>
+  </mat-card-content>
+</mat-card>

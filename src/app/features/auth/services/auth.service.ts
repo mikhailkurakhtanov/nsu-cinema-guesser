@@ -1,4 +1,4 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {catchError, Observable, tap, throwError} from 'rxjs';
@@ -8,7 +8,6 @@ import {ChangePassword} from '@features/auth/models/change-password-form.model';
 import {Login} from '@features/auth/models/login-form.model';
 import {Register} from '@features/auth/models/register-form.model';
 import {constants} from '@shared/constants';
-import {Utils} from '@shared/utils';
 
 @Injectable()
 export class AuthService {
@@ -23,34 +22,32 @@ export class AuthService {
   authenticate(loginData: Login): Observable<AuthData> {
     return this.http.post<AuthData>(`${this.apiUrl}/authenticate`, loginData, {headers: this.httpHeaders}).pipe(
       tap(response => this.saveAuthData(response)),
-      catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.message))),
+      catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.error))),
     );
   }
 
   sendChangePasswordConfirmationCode(email: string): Observable<void> {
-    const httpParams: HttpParams = Utils.objectToHttpParams({email});
     return this.http
-      .get<void>(`${this.apiUrl}/change-password`, {params: httpParams})
-      .pipe(catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.message))));
-  }
-
-  validateChangePasswordConfirmationCode(email: string, confirmationCode: string): Observable<void> {
-    const httpParams: HttpParams = Utils.objectToHttpParams({email, confirmationCode});
-    return this.http
-      .get<void>(`${this.apiUrl}/change-password`, {params: httpParams})
-      .pipe(catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.message))));
+      .post<void>(`${this.apiUrl}/forgot-password`, {email: email})
+      .pipe(catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.error))));
   }
 
   changePassword(formData: ChangePassword): Observable<void> {
     return this.http
-      .put<void>(`${this.apiUrl}/change-password`, formData)
+      .post<void>(`${this.apiUrl}/set-new-password`, formData)
+      .pipe(catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.error))));
+  }
+
+  validateChangePasswordConfirmationCode(email: string, confirmationCode: string): Observable<void> {
+    return this.http
+      .post<void>(`${this.apiUrl}/check-pass-reset-code`, {email: email, resetCode: confirmationCode})
       .pipe(catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.message))));
   }
 
   register(registerData: Register): Observable<AuthData> {
     return this.http.post<AuthData>(`${this.apiUrl}/register`, registerData, {headers: this.httpHeaders}).pipe(
       tap(response => this.saveAuthData(response)),
-      catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.message))),
+      catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.error))),
     );
   }
 
@@ -63,9 +60,9 @@ export class AuthService {
   }
 
   private saveAuthData(authData: AuthData): void {
-    localStorage.setItem(constants.localStorage.accessToken, authData.accessToken);
-    localStorage.setItem(constants.localStorage.refreshToken, authData.refreshToken);
+    localStorage.setItem(constants.localStorage.accessToken, authData.access_token);
+    localStorage.setItem(constants.localStorage.refreshToken, authData.refresh_token);
   }
 
-  private showErrorMessage = (message: string) => this.snackBar.open(message, undefined, {duration: constants.defaultSnackBarDuration});
+  private showErrorMessage = (message: string) => this.snackBar.open(message);
 }

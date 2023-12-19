@@ -6,7 +6,7 @@
     </div>
 
     <form class="form-body" [formGroup]="form">
-      <mat-form-field color="accent">
+      <mat-form-field>
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" />
         <mat-error *ngIf="form.get('email')?.hasError('required')">{{ formErrors.required }}</mat-error>
@@ -14,21 +14,21 @@
         <mat-error *ngIf="form.get('email')?.hasError('maxLength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field color="accent">
+      <mat-form-field>
         <mat-label>Имя пользователя</mat-label>
         <input matInput formControlName="username" />
         <mat-error *ngIf="form.get('username')?.hasError('required')">{{ formErrors.required }}</mat-error>
         <mat-error *ngIf="form.get('username')?.hasError('maxLength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field color="accent">
+      <mat-form-field>
         <mat-label>Пароль</mat-label>
         <input matInput type="password" formControlName="password" />
         <mat-error *ngIf="form.get('password')?.hasError('required')">{{ formErrors.required }}</mat-error>
         <mat-error *ngIf="form.get('password')?.hasError('maxLength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field color="accent">
+      <mat-form-field>
         <mat-label>Подтверждение пароля</mat-label>
         <input matInput type="password" formControlName="passwordConfirmation" />
         <mat-error *ngIf="form.controls.passwordConfirmation.hasError('required')">{{ formErrors.required }}</mat-error>
@@ -37,9 +37,7 @@
       </mat-form-field>
 
       <div class="form-actions">
-        <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="submitForm()">
-          Создать учетную запись
-        </button>
+        <button mat-raised-button type="button" [disabled]="form.invalid" (click)="submitForm()">Создать учетную запись</button>
       </div>
     </form>
     <span class="form-footer">Уже есть учетная запись?&nbsp;<a [routerLink]="AppPath.LOGIN">Войти</a></span>

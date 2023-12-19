@@ -1,0 +1,15 @@
+<div style="display: flex">
+  <p>Время игры:&nbsp;</p>
+  <p>
+    <span *ngIf="hours < 10">0</span>
+    <span>{{ hours }}:</span>
+  </p>
+  <p>
+    <span *ngIf="minutes < 10">0</span>
+    <span>{{ minutes }}:</span>
+  </p>
+  <p>
+    <span *ngIf="seconds < 10">0</span>
+    <span>{{ seconds }}</span>
+  </p>
+</div>

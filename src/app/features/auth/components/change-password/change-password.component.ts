@@ -82,7 +82,7 @@ export class ChangePasswordComponent implements OnInit {
       .sendChangePasswordConfirmationCode(this.form.controls.email.value)
       .pipe(takeUntil(this.destroy))
       .subscribe(() => {
-        this.snackBar.open('Письмо с кодом подтверждения отправлено', undefined, {duration: constants.defaultSnackBarDuration});
+        this.snackBar.open('Письмо с кодом подтверждения отправлено');
         this.confirmationCodeFormIsVisible = true;
       });
   }
@@ -99,7 +99,7 @@ export class ChangePasswordComponent implements OnInit {
       .validateChangePasswordConfirmationCode(emailControl.value, codeControl.value)
       .pipe(takeUntil(this.destroy))
       .subscribe(() => {
-        this.snackBar.open('Код успешно подтвержден', undefined, {duration: constants.defaultSnackBarDuration});
+        this.snackBar.open('Код успешно подтвержден');
         this.changePasswordFormIsVisible = true;
       });
   }
@@ -110,18 +110,14 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     const formData: ChangePassword = {
+      resetCode: Number(this.form.controls.confirmationCode.value),
       email: this.form.controls.email.value,
       newPassword: this.form.controls.password.value,
-      newPasswordConfirmation: this.form.controls.passwordConfirmation.value,
     };
 
     this.authService
       .changePassword(formData)
       .pipe(takeUntil(this.destroy))
-      .subscribe(() =>
-        this.router
-          .navigate([AppPath.LOGIN])
-          .then(() => this.snackBar.open('Пароль успешно изменен', undefined, {duration: constants.defaultSnackBarDuration})),
-      );
+      .subscribe(() => this.router.navigate([AppPath.LOGIN]).then(() => this.snackBar.open('Пароль успешно изменен')));
   }
 }

@@ -6,14 +6,14 @@
     </div>
 
     <form class="form-body" [formGroup]="form">
-      <mat-form-field color="accent">
+      <mat-form-field>
         <mat-label>Имя пользователя</mat-label>
         <input matInput [formControl]="form.controls.username" />
         <mat-error *ngIf="form.controls.username.hasError('required')">{{ formErrors.required }}</mat-error>
         <mat-error *ngIf="form.controls.username.hasError('maxlength')">{{ formErrors.maxLength }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field color="accent">
+      <mat-form-field>
         <mat-label>Пароль</mat-label>
         <input matInput type="password" [formControl]="form.controls.password" />
         <mat-error *ngIf="form.controls.password.hasError('required')">{{ formErrors.required }}</mat-error>
@@ -21,7 +21,7 @@
       </mat-form-field>
 
       <div class="form-actions">
-        <button mat-raised-button color="accent" type="button" [disabled]="form.invalid" (click)="login()">Войти</button>
+        <button mat-raised-button type="button" [disabled]="form.invalid" (click)="login()">Войти</button>
       </div>
     </form>
 
