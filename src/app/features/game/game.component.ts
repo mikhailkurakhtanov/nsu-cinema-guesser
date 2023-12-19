@@ -54,8 +54,8 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!this.alive) {
-      if (this.roundInfo.id) {
+    if (!this.alive && this.levelType) {
+      if (this.roundInfo?.id) {
         this.gameService.endGame(this.roundInfo.id).pipe(takeUntil(this.destroy)).subscribe();
       }
 
