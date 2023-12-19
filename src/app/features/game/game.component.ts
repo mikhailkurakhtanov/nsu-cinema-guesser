@@ -1,12 +1,12 @@
-import {Component, OnInit, Self} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, Self} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
-import {filter, map, switchMap, take, takeUntil, tap} from 'rxjs';
+import {filter, map, switchMap, takeUntil} from 'rxjs';
 
 import {NgOnDestroy} from '@core/services/ng-on-destroy.service';
 import {GameParameterType, GameRound} from '@features/game/models/game.model';
 import {GameService} from '@features/game/services/game.service';
-import {constants} from '@shared/constants';
+import {AppPath} from '@shared/enums/app-path.enum';
 import {LevelType} from '@shared/enums/level-type.enum';
 
 @Component({
@@ -15,20 +15,25 @@ import {LevelType} from '@shared/enums/level-type.enum';
   styleUrls: ['./game.component.scss'],
   providers: [NgOnDestroy],
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   roundInfo!: GameRound;
-  availableParams: GameParameterType[] = [];
-  gameIsLoaded = false;
 
+  availableParams: GameParameterType[] = [];
+  usedParams: GameParameterType[] = [];
+
+  alive = false;
   selectedAnswer = '';
   imageSrc = '';
+  totalScore = 0;
   currentRound = 1;
+  gameIsLoaded = false;
   receivedTextParams: string[] = [];
 
   private levelType!: LevelType;
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private changeDetectorRef: ChangeDetectorRef,
     private gameService: GameService,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -36,10 +41,26 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.pipe(take(1)).subscribe(params => {
+    this.activatedRoute.paramMap.pipe(takeUntil(this.destroy)).subscribe(params => {
       this.levelType = params.get('mode') as LevelType;
-      this.startGame();
+
+      if (!this.levelType) {
+        this.router.navigate([`${AppPath.GAME}/${LevelType.EASY}`]).finally();
+      } else {
+        this.alive = true;
+        this.startGame();
+      }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (!this.alive) {
+      if (this.roundInfo.id) {
+        this.gameService.endGame(this.roundInfo.id).pipe(takeUntil(this.destroy)).subscribe();
+      }
+
+      this.snackBar.open(`Игра закончена. Счет: ${this.totalScore}. Пройдено раундов: ${this.currentRound - 1}`);
+    }
   }
 
   endGame(): void {
@@ -50,7 +71,11 @@ export class GameComponent implements OnInit {
     this.gameService
       .endGame(this.roundInfo.id)
       .pipe(takeUntil(this.destroy))
-      .subscribe(message => this.snackBar.open(message, undefined, {duration: constants.defaultSnackBarDuration}));
+      .subscribe(() => {
+        this.roundInfo.id = 0;
+        this.alive = false;
+        this.router.navigate(['']).then();
+      });
   }
 
   getParameter(type: GameParameterType, localizedParam: string): void {
@@ -63,17 +88,19 @@ export class GameComponent implements OnInit {
       .pipe(takeUntil(this.destroy))
       .subscribe(param => {
         if (!param.score) {
-          this.router
-            .navigate([''])
-            .then(() => this.snackBar.open('Игра закончена', undefined, {duration: constants.defaultSnackBarDuration}));
+          this.alive = false;
+          this.router.navigate(['']).then();
         }
+
+        const index = this.availableParams.indexOf(type);
+        this.availableParams.splice(index, 1);
+        this.usedParams.push(type);
+        this.changeDetectorRef.markForCheck();
 
         this.roundInfo.score = param.score;
         if (param.parameter.length) {
           this.receivedTextParams.push(`${localizedParam}: ${param.parameter.join(', ')}`);
-        } else {
-          this.snackBar.open('Не удалось получить подсказку', undefined, {duration: constants.defaultSnackBarDuration});
-        }
+        } else this.snackBar.open('Не удалось получить подсказку');
       });
   }
 
@@ -93,13 +120,18 @@ export class GameComponent implements OnInit {
         this.roundInfo.score = param.score;
         this.imageSrc = param.parameter[0];
 
+        const index = this.availableParams.indexOf(GameParameterType.IMAGES);
+        this.availableParams.splice(index, 1);
+        this.usedParams.push(GameParameterType.IMAGES);
+        this.changeDetectorRef.markForCheck();
+
         this.gameIsLoaded = true;
       });
   }
 
   confirmAnswer(): void {
     if (!this.roundInfo || !this.selectedAnswer.length) {
-      this.snackBar.open('Выберите вариант ответа', undefined, {duration: constants.defaultSnackBarDuration});
+      this.snackBar.open('Выберите вариант ответа');
       return;
     }
 
@@ -109,20 +141,22 @@ export class GameComponent implements OnInit {
       .setAnswer(this.roundInfo.id, this.selectedAnswer)
       .pipe(
         map(result => {
-          if (result.right) {
-            this.receivedTextParams = [];
-            this.roundInfo = result.round;
-
-            this.snackBar.open('Вы угадали!', undefined, {duration: constants.defaultSnackBarDuration});
-          } else {
-            this.gameIsLoaded = true;
-            this.snackBar.open('Неверный ответ. Попробуйте еще раз!', undefined, {duration: constants.defaultSnackBarDuration});
+          if (!result.alive) {
+            this.alive = false;
+            this.router.navigate(['']).then();
           }
 
-          if (!result.alive) {
-            this.router
-              .navigate([''])
-              .then(() => this.snackBar.open('Игра закончена.', undefined, {duration: constants.defaultSnackBarDuration}));
+          if (result.right) {
+            this.usedParams = [];
+            this.receivedTextParams = [];
+            this.roundInfo = result.round;
+            this.totalScore += result.score;
+
+            this.snackBar.open(`Вы угадали! Начислено ${result.score} очков`);
+          } else {
+            this.gameIsLoaded = true;
+            this.roundInfo.score = result.score;
+            this.snackBar.open('Неверный ответ. Попробуйте еще раз!');
           }
 
           return result.alive && result.right;
@@ -130,19 +164,22 @@ export class GameComponent implements OnInit {
         filter(refreshRoundData => refreshRoundData),
         switchMap(() => this.gameService.getAvailableParameters(Number(this.roundInfo.id))),
         map(params => (this.availableParams = params)),
-        filter(() => !!this.availableParams.find(param => param === GameParameterType.IMAGES)),
         switchMap(() => this.gameService.getParameter(this.roundInfo.id, GameParameterType.IMAGES)),
         map(param => {
-          this.roundInfo.score = param.score;
           this.imageSrc = param.parameter[0];
-        }),
-        tap(() => {
-          this.currentRound++;
-          this.selectedAnswer = '';
-          this.gameIsLoaded = true;
+
+          const index = this.availableParams.indexOf(GameParameterType.IMAGES);
+          this.availableParams.splice(index, 1);
+          this.usedParams.push(GameParameterType.IMAGES);
+
+          this.changeDetectorRef.markForCheck();
         }),
         takeUntil(this.destroy),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.currentRound++;
+        this.selectedAnswer = '';
+        this.gameIsLoaded = true;
+      });
   }
 }

@@ -1,10 +1,10 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, Self, ViewChild} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
+import {filter, from, takeUntil} from 'rxjs';
 
 import {NgOnDestroy} from '@core/services/ng-on-destroy.service';
 import {AuthService} from '@features/auth/services/auth.service';
-import {constants} from '@shared/constants';
 import {AppPath} from '@shared/enums/app-path.enum';
 import {LevelType} from '@shared/enums/level-type.enum';
 
@@ -21,13 +21,13 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('window:resize') refreshWindowWidth = () => (this.windowWidth = window.innerWidth);
 
-  readonly AppPath = AppPath;
   readonly LevelType = LevelType;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
+    @Self() private destroy: NgOnDestroy,
   ) {}
 
   ngOnInit(): void {
@@ -35,13 +35,19 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
-    this.router
-      .navigate([AppPath.LOGIN])
-      .then(() => this.snackBar.open('Вы вышли из учетной записи', undefined, {duration: constants.defaultSnackBarDuration}));
+    from(this.router.navigate([AppPath.LOGIN]))
+      .pipe(
+        filter(result => result),
+        takeUntil(this.destroy),
+      )
+      .subscribe(() => {
+        this.authService.logout();
+        this.snackBar.open('Вы вышли из учетной записи');
+      });
   }
 
   navigateToGame(type: LevelType): void {
-    this.router.navigate([`${AppPath.GAME}/${type}`]).then();
+    const urlPath = `${AppPath.GAME}/${type}`;
+    this.router.navigate([this.router.url === urlPath ? '' : urlPath]).then();
   }
 }

@@ -78,10 +78,6 @@ export class RegisterComponent implements OnInit {
     this.authService
       .register(this.registerData)
       .pipe(takeUntil(this.destroy))
-      .subscribe(() =>
-        this.router
-          .navigate([''])
-          .then(() => this.snackBar.open('Вы вошли в систему', undefined, {duration: constants.defaultSnackBarDuration})),
-      );
+      .subscribe(() => this.router.navigate(['']).then(() => this.snackBar.open('Вы вошли в систему')));
   }
 }

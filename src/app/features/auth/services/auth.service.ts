@@ -60,9 +60,9 @@ export class AuthService {
   }
 
   private saveAuthData(authData: AuthData): void {
-    localStorage.setItem(constants.localStorage.accessToken, authData.accessToken);
-    localStorage.setItem(constants.localStorage.refreshToken, authData.refreshToken);
+    localStorage.setItem(constants.localStorage.accessToken, authData.access_token);
+    localStorage.setItem(constants.localStorage.refreshToken, authData.refresh_token);
   }
 
-  private showErrorMessage = (message: string) => this.snackBar.open(message, undefined, {duration: constants.defaultSnackBarDuration});
+  private showErrorMessage = (message: string) => this.snackBar.open(message);
 }

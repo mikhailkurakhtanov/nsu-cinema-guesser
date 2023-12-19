@@ -52,5 +52,5 @@ export class GameService {
       .pipe(catchError((error: HttpErrorResponse) => throwError(() => this.showErrorMessage(error.error))));
   }
 
-  private showErrorMessage = (message: string) => this.snackBar.open(message, undefined, {duration: constants.defaultSnackBarDuration});
+  private showErrorMessage = (message: string) => this.snackBar.open(message);
 }

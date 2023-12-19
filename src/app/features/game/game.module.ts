@@ -6,9 +6,10 @@ import {GameComponent} from '@features/game/game.component';
 import {GameService} from '@features/game/services/game.service';
 import {SharedModule} from '@shared/shared.module';
 import { GameParamLocalizePipe } from './pipes/game-param-localize.pipe';
+import { StopwatchComponent } from './components/stopwatch/stopwatch.component';
 
 @NgModule({
-  declarations: [GameComponent, GameParamLocalizePipe],
+  declarations: [GameComponent, GameParamLocalizePipe, StopwatchComponent],
   imports: [CommonModule, GameRoutingModule, SharedModule],
   providers: [GameService],
 })

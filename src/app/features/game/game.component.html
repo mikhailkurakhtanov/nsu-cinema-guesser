@@ -22,8 +22,20 @@
 
     <mat-card style="margin: 16px 0">
       <mat-card-content style="display: flex; justify-content: space-between; align-items: center">
-        <span>Счет: {{ roundInfo?.score }}</span>
-        <button mat-raised-button [matMenuTriggerFor]="paramSelector">Выбрать подсказку</button>
+        <div style="display: flex; flex-direction: column">
+          <cinema-guesser-features-game-stopwatch></cinema-guesser-features-game-stopwatch>
+
+          <p *ngIf="roundInfo">Баланс: {{ roundInfo.score }}</p>
+          <p>Общий счет: {{ totalScore }}</p>
+        </div>
+        <button
+          mat-raised-button
+          matTooltipPosition="left"
+          [matTooltipDisabled]="!usedParams.length"
+          [matTooltip]="'Использованные подсказки: ' + usedParams.join(', ')"
+          [matMenuTriggerFor]="paramSelector">
+          Выбрать подсказку
+        </button>
         <mat-menu #paramSelector="matMenu">
           <ng-container *ngFor="let param of availableParams">
             <button #paramsItem mat-menu-item (click)="getParameter(param, paramsItem._getHostElement().innerText)">
@@ -40,7 +52,7 @@
       </mat-radio-group>
     </div>
 
-    <div style="display: flex; justify-content: space-around">
+    <div style="display: flex; justify-content: space-around; margin-top: 16px">
       <button mat-raised-button (click)="endGame()">Завершить игру</button>
       <button mat-raised-button (click)="confirmAnswer()">Ответить</button>
     </div>
